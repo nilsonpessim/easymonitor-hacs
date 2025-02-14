@@ -1,5 +1,6 @@
 from homeassistant.helpers.entity import Entity
 from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.components.sensor import SensorEntity  # Melhor prática para sensores
 from homeassistant.helpers.entity import DeviceInfo
 import logging
 
@@ -38,7 +39,7 @@ async def async_setup_entry(hass: HomeAssistantType, config_entry, async_add_ent
 
     await mqtt.async_subscribe("easymonitor/+/status", device_discovered, 1)
 
-class EasyMonitorSensor(Entity):
+class EasyMonitorSensor(SensorEntity):
     """Representa um sensor EasyMonitor baseado em MQTT."""
 
     def __init__(self, mqtt, device_id, sensor_id):
@@ -53,13 +54,13 @@ class EasyMonitorSensor(Entity):
         self._attr_native_unit_of_measurement = SENSORS[sensor_id]["unit"]
         self._attr_icon = SENSORS[sensor_id]["icon"]
 
-        # 🔥 Adicionando Device Info para agrupar sensores em dispositivos
+        # ✅ Corrigindo identificador do dispositivo para evitar duplicações
         self._attr_device_info = DeviceInfo(
-            identifiers={(f"easymonitor_{device_id}")},
+            identifiers={( "easymonitor", device_id )},  # 🔥 Agora é um set com uma tupla correta
             name=f"EasyMonitor {device_id}",
             manufacturer="TechLabs",
             model="EasyMonitor",
-            sw_version="1.0.1"
+            sw_version="1.0.3"
         )
 
     async def async_added_to_hass(self):

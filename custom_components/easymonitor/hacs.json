@@ -6,5 +6,6 @@
   "render_readme": true,
   "zip_release": false,
   "filename": "custom_components/easymonitor",
-  "categories": ["integration"]
+  "categories": ["integration"],
+  "image": "https://raw.githubusercontent.com/nilsonpessim/easymonitor-hacs/main/icon.png"
 }

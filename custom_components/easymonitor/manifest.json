@@ -1,7 +1,7 @@
 {
   "domain": "easymonitor",
   "name": "EasyMonitor",
-  "version": "0.0.5",
+  "version": "1.0.0",
   "documentation": "https://github.com/nilsonpessim/easymonitor-hacs",
   "dependencies": [],
   "requirements": [],

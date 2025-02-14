@@ -39,16 +39,14 @@ class EasyMonitorSensor(SensorEntity):
         self._attr_unique_id = f"easymonitor_{sensor_id}"
         self._attr_device_class = "temperature" if "temp" in sensor_id else "voltage"
 
-    async def async_added_to_hass(self):
-        """Subscreve ao tópico MQTT correspondente."""
-        topic = f"easymonitor/+/ {self._sensor_id}"
-
-        async def message_received(msg):
-            self._state = msg.payload
-            self.async_write_ha_state()
-
-        await async_subscribe(self.hass, topic, message_received, 1)
-
     @property
-    def state(self):
-        return self._state
+    def icon(self):
+        """Define o ícone baseado no tipo do sensor."""
+        if "temp" in self._sensor_id:
+            return "mdi:thermometer"
+        elif "humi" in self._sensor_id:
+            return "mdi:water-percent"
+        elif "voltage" in self._sensor_id:
+            return "mdi:flash"
+        return "mdi:chip"
+

@@ -1,13 +1,19 @@
 """Integração EasyMonitor via MQTT."""
 import logging
 
-from homeassistant.helpers.discovery import async_load_platform
-from homeassistant.const import Platform
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant
 
 DOMAIN = "easymonitor"
 _LOGGER = logging.getLogger(__name__)
 
-async def async_setup_entry(hass, entry):
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry):
     """Configura a integração do EasyMonitor."""
-    hass.async_create_task(async_load_platform(hass, Platform.SENSOR, DOMAIN, {}, entry))
+    _LOGGER.info("Iniciando integração EasyMonitor")
+
+    # Encaminha a configuração para o sensor.py
+    hass.async_create_task(
+        hass.config_entries.async_forward_entry_setup(entry, "sensor")
+    )
+
     return True

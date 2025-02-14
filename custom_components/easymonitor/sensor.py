@@ -1,3 +1,6 @@
+from homeassistant.helpers.entity import Entity
+from homeassistant.helpers.typing import HomeAssistantType
+from homeassistant.helpers.entity import DeviceInfo
 import logging
 
 _LOGGER = logging.getLogger(__name__)
@@ -12,21 +15,18 @@ SENSORS = {
     "voltageAC0": {"name": "Tensão AC0", "unit": "V", "icon": "mdi:flash"}
 }
 
-
-
-async def async_setup_entry(hass, config_entry, async_add_entities):
+async def async_setup_entry(hass: HomeAssistantType, config_entry, async_add_entities):
     """Configura automaticamente os sensores MQTT do EasyMonitor."""
     mqtt = hass.components.mqtt
     entities = {}
 
-    # Descoberta de dispositivos no tópico "easymonitor/+/status"
     async def device_discovered(msg):
         topic_parts = msg.topic.split("/")
         if len(topic_parts) < 3:
             return
 
         device_id = topic_parts[1]
-        
+
         if device_id not in entities:
             entities[device_id] = []
             _LOGGER.info(f"Novo dispositivo detectado: {device_id}")
@@ -36,9 +36,9 @@ async def async_setup_entry(hass, config_entry, async_add_entities):
                 entities[device_id].append(entity)
                 async_add_entities([entity], True)
 
-    await async_subscribe(hass, "easymonitor/+/status", device_discovered, 1)
+    await mqtt.async_subscribe("easymonitor/+/status", device_discovered, 1)
 
-class EasyMonitorSensor(SensorEntity):
+class EasyMonitorSensor(Entity):
     """Representa um sensor EasyMonitor baseado em MQTT."""
 
     def __init__(self, mqtt, device_id, sensor_id):
@@ -53,6 +53,15 @@ class EasyMonitorSensor(SensorEntity):
         self._attr_native_unit_of_measurement = SENSORS[sensor_id]["unit"]
         self._attr_icon = SENSORS[sensor_id]["icon"]
 
+        # 🔥 Adicionando Device Info para agrupar sensores em dispositivos
+        self._attr_device_info = DeviceInfo(
+            identifiers={(f"easymonitor_{device_id}")},
+            name=f"EasyMonitor {device_id}",
+            manufacturer="TechLabs",
+            model="EasyMonitor",
+            sw_version="1.0.1"
+        )
+
     async def async_added_to_hass(self):
         """Subscreve ao tópico MQTT correspondente."""
         topic = f"easymonitor/{self._device_id}/{self._sensor_id}"
@@ -61,7 +70,7 @@ class EasyMonitorSensor(SensorEntity):
             self._state = msg.payload
             self.async_write_ha_state()
 
-        await async_subscribe(self.hass, topic, message_received, 1)
+        await self._mqtt.async_subscribe(topic, message_received, 1)
 
     @property
     def state(self):

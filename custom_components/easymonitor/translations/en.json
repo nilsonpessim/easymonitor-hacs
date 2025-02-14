@@ -1,0 +1,28 @@
+{
+    "config": {
+      "step": {
+        "user": {
+          "title": "EasyMonitor Setup",
+          "description": "Configure your EasyMonitor MQTT integration."
+        }
+      }
+    },
+    "title": "EasyMonitor",
+    "options": {
+      "mqtt_server": "MQTT Server",
+      "mqtt_port": "MQTT Port",
+      "mqtt_user": "MQTT Username",
+      "mqtt_password": "MQTT Password"
+    },
+    "sensor": {
+      "status": "Status",
+      "tempCH1": "Temperature CH1",
+      "tempCH2": "Temperature CH2",
+      "humiCH1": "Humidity CH1",
+      "humiCH2": "Humidity CH2",
+      "voltageDC0": "Voltage DC Channel 0",
+      "voltageDC1": "Voltage DC Channel 1",
+      "voltageAC0": "Voltage AC Channel 0"
+    }
+  }
+  

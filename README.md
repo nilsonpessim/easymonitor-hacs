@@ -1,5 +1,6 @@
 # 🚀 EasyMonitor - Integração MQTT com Home Assistant
 
+
 [![Latest Release](https://img.shields.io/github/v/release/nilsonpessim/easymonitor-hacs?style=for-the-badge)](https://github.com/nilsonpessim/easymonitor-hacs/releases)
 [![License](https://img.shields.io/github/license/nilsonpessim/easymonitor-hacs?style=for-the-badge)](LICENSE)
 [![Home Assistant Version](https://img.shields.io/badge/Home%20Assistant-2025.3.0%2B-blue?style=for-the-badge)](https://www.home-assistant.io/)

@@ -2,7 +2,7 @@
 
 [![Latest Release](https://img.shields.io/github/v/release/nilsonpessim/easymonitor-hacs?style=for-the-badge)](https://github.com/nilsonpessim/easymonitor-hacs/releases)
 [![License](https://img.shields.io/github/license/nilsonpessim/easymonitor-hacs?style=for-the-badge)](LICENSE)
-[![Home Assistant Version](https://img.shields.io/badge/Home%20Assistant-2023.1.0%2B-blue?style=for-the-badge)](https://www.home-assistant.io/)
+[![Home Assistant Version](https://img.shields.io/badge/Home%20Assistant-2025.3.0%2B-blue?style=for-the-badge)](https://www.home-assistant.io/)
 [![HACS Custom Integration](https://img.shields.io/badge/HACS-Custom%20Integration-orange?style=for-the-badge)](https://hacs.xyz/)
 
 **EasyMonitor** é uma integração personalizada para o **Home Assistant** que detecta automaticamente dispositivos da linha *EasyMonitor* conectados via **MQTT**, exibindo sensores organizados por dispositivo.

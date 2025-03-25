@@ -40,8 +40,7 @@
 
 1. Vá em **Configurações > Dispositivos e Serviços**
 2. Clique em **Adicionar Integração** → **EasyMonitor**
-3. Informe o host e credenciais do seu broker MQTT
-4. Os dispositivos serão detectados automaticamente conforme se conectarem
+3. Os dispositivos serão detectados automaticamente conforme se conectarem
 
 ---
 
@@ -61,13 +60,13 @@
 
 ## 🧭 Entidades e Dispositivos
 
-- Cada dispositivo é identificado por um ID único (gerado via MAC Address)
+- Cada dispositivo é identificado por um ID único (gerado pelo EasyMonitor)
 - As entidades são automaticamente criadas **somente para os sensores que estão sendo enviados**
-- Os dispositivos ficam organizados na interface do Home Assistant por nome/modelo, com suporte ao botão de ação
+- Os dispositivos ficam organizados na interface do Home Assistant
 
 ---
 
-## 🧩 Botões e Serviços
+## 🧩 Serviços
 
 É possível chamar os serviços manualmente:
 
@@ -99,10 +98,6 @@ Exemplo: enviar notificação se `voltageAC0` ficar como "off".
 - Certifique-se de que o dispositivo publicou no tópico `/status`
 - Reinicie o Home Assistant
 
-### Dispositivos duplicados?
-- Pode acontecer se o ID não for fixo
-- Use o ID baseado no MAC do dispositivo para garantir unicidade
-
 ---
 
 ## 🤝 Contribuições
@@ -112,5 +107,5 @@ Pull Requests e Issues são bem-vindos!
 
 ---
 
-## 💡 Desenvolvido por **TechLabs**  
+## 💡 Desenvolvido por **Nilson Pessim**  
 🔗 [easymonitor.com.br](https://easymonitor.com.br)

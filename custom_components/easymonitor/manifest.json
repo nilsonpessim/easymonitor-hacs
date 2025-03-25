@@ -1,0 +1,15 @@
+{
+  "domain": "easymonitor",
+  "name": "EasyMonitor",
+  "version": "1.0.4",
+  "documentation": "https://github.com/nilsonpessim/easymonitor-hacs",
+  "dependencies": [],
+  "requirements": [],
+  "codeowners": ["@nilsonpessim"],
+  "config_flow": true,
+  "iot_class": "local_push",
+  "mqtt": ["easymonitor/#"],
+  "integration_type": "device",
+  "is_built_in": false,
+  "components": ["sensor"]
+}

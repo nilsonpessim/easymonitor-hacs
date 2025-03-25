@@ -1,0 +1,21 @@
+remover_dispositivo:
+  name: Remover Dispositivo
+  description: Remove manualmente um dispositivo EasyMonitor do Home Assistant.
+  fields:
+    device_id:
+      name: ID do Dispositivo
+      description: ID único do dispositivo EasyMonitor (ex EASYMON_C05D89C2A).
+      required: true
+      selector:
+        text: {}
+
+resetar_status_dispositivo:
+  name: Resetar Status do Dispositivo
+  description: Reseta o status do dispositivo EasyMonitor, removendo entidades e estados associados.
+  fields:
+    device_id:
+      name: ID do Dispositivo
+      description: ID único do dispositivo EasyMonitor (ex EASYMON_C05D89C2A).
+      required: true
+      selector:
+        text: {}

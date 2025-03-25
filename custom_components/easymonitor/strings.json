@@ -1,0 +1,10 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Configuração do EasyMonitor",
+        "description": "Adicionar novo dispositivo MQTT"
+      }
+    }
+  }
+}

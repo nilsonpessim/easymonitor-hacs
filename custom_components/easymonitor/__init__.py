@@ -1,64 +1,51 @@
-from homeassistant.core import HomeAssistant, ServiceCall
-from homeassistant.helpers.device_registry import async_get as async_get_dev_reg
-from homeassistant.helpers.entity_registry import async_get as async_get_ent_reg, async_entries_for_device
-from .const import DOMAIN
 import logging
-
-DOMAIN = "easymonitor"
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.helpers.typing import ConfigType
+from homeassistant.helpers import device_registry as dr
+from homeassistant.components import mqtt
 
 _LOGGER = logging.getLogger(__name__)
+DOMAIN = "easymonitor"
 
-async def async_setup_entry(hass, entry):
-    """Configura a integração EasyMonitor."""
+async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
+    return True
 
-    # Novo método recomendado para setups
-    await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
+async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    hass.data.setdefault(DOMAIN, {})
 
-    # Serviço para remover dispositivo manualmente
+    # Registrar serviço para remover dispositivo
     async def remover_dispositivo_service(call: ServiceCall):
         device_id = call.data.get("device_id")
         if not device_id:
-            _LOGGER.warning("Nenhum device_id informado para remoção.")
+            _LOGGER.warning("[EasyMonitor] device_id não fornecido para remoção.")
             return
 
-        dev_reg = async_get_dev_reg(hass)
+        device_registry = dr.async_get(hass)
+        for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
+            identifiers = list(device.identifiers)[0]
+            if identifiers[1] == device_id:
+                device_registry.async_remove_device(device.id)
+                _LOGGER.info(f"[EasyMonitor] Dispositivo {device_id} removido do registro.")
 
-        # Procura e remove o dispositivo
-        for device in dev_reg.devices.values():
-            identifiers = list(device.identifiers)
-            if any(device_id in identifier for identifier in identifiers):
-                _LOGGER.info(f"Removendo dispositivo {device.name} ({device.id})")
-                dev_reg.async_remove_device(device.id)
-                return
+        # Tópicos MQTT retidos a serem limpos
+        topics = [
+            f"easymonitor/{device_id}/voltageAC0",
+            f"easymonitor/{device_id}/voltageDC0",
+            f"easymonitor/{device_id}/voltageDC1",
+            f"easymonitor/{device_id}/tempCH1",
+            f"easymonitor/{device_id}/humiCH1",
+            f"easymonitor/{device_id}/tempCH2",
+            f"easymonitor/{device_id}/humiCH2",
+            f"easymonitor/{device_id}/info",
+            f"easymonitor/{device_id}/status"
+        ]
 
-        _LOGGER.warning(f"Dispositivo com ID {device_id} não encontrado.")
-
-    # Serviço para resetar o status do dispositivo (remove entidades e o próprio dispositivo)
-    async def resetar_status_dispositivo_service(call: ServiceCall):
-        device_id = call.data.get("device_id")
-        if not device_id:
-            _LOGGER.warning("Nenhum device_id informado para reset.")
-            return
-
-        dev_reg = async_get_dev_reg(hass)
-        ent_reg = async_get_ent_reg(hass)
-
-        # Encontra o dispositivo pelo identificador
-        for device in dev_reg.devices.values():
-            if device_id in {id[1] for id in device.identifiers}:
-                # Remove todas as entidades do dispositivo
-                for entity in async_entries_for_device(ent_reg, device.id):
-                    ent_reg.async_remove(entity.entity_id)
-                    _LOGGER.info(f"Entidade {entity.entity_id} removida.")
-
-                # Remove o dispositivo
-                dev_reg.async_remove_device(device.id)
-                _LOGGER.info(f"Dispositivo {device.name} removido com sucesso.")
-                return
-
-        _LOGGER.warning(f"Dispositivo {device_id} não encontrado.")
+        for topic in topics:
+            await mqtt.async_publish(hass, topic, "", retain=True)
+            _LOGGER.info(f"[EasyMonitor] Tópico MQTT limpo: {topic}")
 
     hass.services.async_register(DOMAIN, "remover_dispositivo", remover_dispositivo_service)
-    hass.services.async_register(DOMAIN, "resetar_status_dispositivo", resetar_status_dispositivo_service)
 
+    await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
     return True

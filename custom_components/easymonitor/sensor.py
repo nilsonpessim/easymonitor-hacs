@@ -25,7 +25,12 @@ async def async_setup_entry(hass: HomeAssistant, config_entry, async_add_entitie
 
     async def device_discovered(msg):
         try:
+            if not msg.payload.strip():
+                # _LOGGER.warning("[EasyMonitor] Payload de status vazio, ignorado.")
+                return
+
             payload = json.loads(msg.payload)
+
             device_id = payload["device"]
             sensor_list = payload["sensors"]
         except Exception as e:
@@ -53,6 +58,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry, async_add_entitie
 
             async def info_callback(info_msg):
                 try:
+                    if not info_msg.payload.strip():
+                       #  _LOGGER.warning(f"[EasyMonitor] Payload de info vazio para {device_id}, ignorado.")
+                        return
                     info_payload = json.loads(info_msg.payload)
                     device_info_data.update(info_payload)
                     _LOGGER.info(f"[EasyMonitor] Info do dispositivo {device_id}: {info_payload}")

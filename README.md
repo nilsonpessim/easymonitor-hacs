@@ -75,18 +75,11 @@ service: easymonitor.remover_dispositivo
 data:
   device_id: EASYM_BA84B
 ```
-
-```
-service: easymonitor.resetar_status
-data:
-  device_id: EASYM_BA84B
-```
-
 ---
 
 ## 🔄 Automação Sugerida
 
-Você pode criar automações com base nos valores dos sensores.  
+Você pode criar automações com base nos valores dos sensores (Entidades).  
 Exemplo: enviar notificação se `voltageAC0` ficar como "off".
 
 ---

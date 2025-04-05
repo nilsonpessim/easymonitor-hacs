@@ -1,6 +1,7 @@
 import logging
-from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, ServiceCall
+from homeassistant.config_entries import ConfigEntry
+from homeassistant.helpers.device_registry import DeviceEntry
 from homeassistant.helpers.typing import ConfigType
 from homeassistant.helpers import device_registry as dr
 from homeassistant.components import mqtt
@@ -37,8 +38,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             f"easymonitor/{device_id}/humiCH1",
             f"easymonitor/{device_id}/tempCH2",
             f"easymonitor/{device_id}/humiCH2",
-            f"easymonitor/{device_id}/info",
-            f"easymonitor/{device_id}/status"
+            f"easymonitor/{device_id}/labels",
+            f"easymonitor/{device_id}/status",
+            f"easymonitor/{device_id}/info"
         ]
 
         for topic in topics:
@@ -49,3 +51,28 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     await hass.config_entries.async_forward_entry_setups(entry, ["sensor"])
     return True
+
+async def async_remove_config_entry_device(hass, config_entry: ConfigEntry, device_entry: DeviceEntry) -> bool:
+    identifiers = device_entry.identifiers
+    for domain, device_id in identifiers:
+        if domain == "easymonitor":
+            try:
+                topics_to_clear = [
+                    f"easymonitor/{device_id}/voltageAC0",
+                    f"easymonitor/{device_id}/voltageDC0",
+                    f"easymonitor/{device_id}/voltageDC1",
+                    f"easymonitor/{device_id}/tempCH1",
+                    f"easymonitor/{device_id}/humiCH1",
+                    f"easymonitor/{device_id}/tempCH2",
+                    f"easymonitor/{device_id}/humiCH2",
+                    f"easymonitor/{device_id}/labels",
+                    f"easymonitor/{device_id}/status",
+                    f"easymonitor/{device_id}/info"
+                ]
+                for topic in topics_to_clear:
+                    await mqtt.async_publish(hass, topic, "", retain=True)
+                _LOGGER.info(f"[EasyMonitor] Tópicos MQTT limpos para {device_id}")
+            except Exception as e:
+                _LOGGER.error(f"[EasyMonitor] Falha ao limpar tópicos MQTT para {device_id}: {e}")
+            return True
+    return False

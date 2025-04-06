@@ -76,7 +76,8 @@ data:
   device_id: EASYM_BA84B
 ```
 
-Após remover, recarregue a integração via menu!
+Após remove-lo, recarregue a integração via menu!
+
 ---
 
 ## 🔄 Automação Sugerida

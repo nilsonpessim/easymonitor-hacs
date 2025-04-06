@@ -14,8 +14,8 @@
 ✔ Integração com **MQTT**  
 ✔ Detecção automática dos dispositivos EasyMonitor  
 ✔ Criação de **entidades organizadas por dispositivo**  
-✔ Suporte a sensores de **temperatura**, **umidade**, **tensão DC** e **status AC**
-✔ Compatível com instalação via **HACS**
+✔ Suporte a sensores de **temperatura**, **umidade**, **tensão DC** e **status AC**  
+✔ Compatível com instalação via **HACS**  
 
 ---
 

@@ -46,15 +46,15 @@
 
 ## 📡 Sensores Suportados
 
-| Identificador  | Nome                | Unidade | Ícone                    |
-|----------------|---------------------|---------|--------------------------|
-| `tempCH1`      | Temperatura CH1     | °C      | 🌡️                      |
-| `tempCH2`      | Temperatura CH2     | °C      | `mdi:thermometer`        |
-| `humiCH1`      | Umidade CH1         | %       | `mdi:water-percent`      |
-| `humiCH2`      | Umidade CH2         | %       | `mdi:water-percent`      |
-| `voltageDC0`   | Tensão DC0          | V       | `mdi:flash`              |
-| `voltageDC1`   | Tensão DC1          | V       | `mdi:flash`              |
-| `voltageAC0`   | Status AC0          | on/off  | `mdi:transmission-tower` |
+| Identificador  | Nome                | Unidade | Ícone |
+|----------------|---------------------|---------|-------|
+| `tempCH1`      | Temperatura CH1     | °C      |   🌡️  |
+| `tempCH2`      | Temperatura CH2     | °C      |   🌡️  |
+| `humiCH1`      | Umidade CH1         | %       |   💧  |
+| `humiCH2`      | Umidade CH2         | %       |   💧  |
+| `voltageDC0`   | Tensão DC0          | V       |   ⚡  |
+| `voltageDC1`   | Tensão DC1          | V       |   ⚡  |
+| `voltageAC0`   | Status AC0          | on/off  |   🗼  |
 
 ---
 

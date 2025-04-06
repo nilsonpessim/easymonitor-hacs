@@ -48,7 +48,7 @@
 
 | Identificador  | Nome                | Unidade | Ícone                    |
 |----------------|---------------------|---------|--------------------------|
-| `tempCH1`      | Temperatura CH1     | °C      | `mdi:thermometer`        |
+| `tempCH1`      | Temperatura CH1     | °C      | 🌡️                      |
 | `tempCH2`      | Temperatura CH2     | °C      | `mdi:thermometer`        |
 | `humiCH1`      | Umidade CH1         | %       | `mdi:water-percent`      |
 | `humiCH2`      | Umidade CH2         | %       | `mdi:water-percent`      |
@@ -68,7 +68,7 @@
 
 ## 🧩 Ações
 
-É possível remover o dispositivo via ações e ou chama-la manualmente:
+É possível remover o dispositivo pela integração ou chamar a ação manualmente:
 
 ```
 action: easymonitor.remover_dispositivo

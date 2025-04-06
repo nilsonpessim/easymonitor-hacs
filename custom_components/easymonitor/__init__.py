@@ -12,6 +12,11 @@ DOMAIN = "easymonitor"
 async def async_setup(hass: HomeAssistant, config: ConfigType) -> bool:
     return True
 
+async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    """Unload a config entry."""
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, ["sensor"])
+    return unload_ok
+
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
 
@@ -76,3 +81,8 @@ async def async_remove_config_entry_device(hass, config_entry: ConfigEntry, devi
                 _LOGGER.error(f"[EasyMonitor] Falha ao limpar tópicos MQTT para {device_id}: {e}")
             return True
     return False
+
+async def async_reload_entry(hass: HomeAssistant, entry: ConfigEntry) -> None:
+    """Handle reload of an entry."""
+    await async_unload_entry(hass, entry)
+    await async_setup_entry(hass, entry)

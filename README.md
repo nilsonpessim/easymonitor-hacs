@@ -14,7 +14,7 @@
 ✔ Integração com **MQTT**  
 ✔ Detecção automática dos dispositivos EasyMonitor  
 ✔ Criação de **entidades organizadas por dispositivo**  
-✔ Suporte a sensores de **temperatura**, **umidade**, **tensão DC** e **status AC**   
+✔ Suporte a sensores de **temperatura**, **umidade**, **tensão DC** e **status AC**
 ✔ Compatível com instalação via **HACS**
 
 ---
@@ -46,15 +46,15 @@
 
 ## 📡 Sensores Suportados
 
-| Identificador  | Nome                | Unidade | Ícone                |
-|----------------|---------------------|---------|----------------------|
-| `tempCH1`      | Temperatura CH1     | °C      | `mdi:thermometer`    |
-| `tempCH2`      | Temperatura CH2     | °C      | `mdi:thermometer`    |
-| `humiCH1`      | Umidade CH1         | %       | `mdi:water-percent`  |
-| `humiCH2`      | Umidade CH2         | %       | `mdi:water-percent`  |
-| `voltageDC0`   | Tensão DC0          | V       | `mdi:flash`          |
-| `voltageDC1`   | Tensão DC1          | V       | `mdi:flash`          |
-| `voltageAC0`   | Status AC0          | on/off  | `mdi:flash`          |
+| Identificador  | Nome                | Unidade | Ícone                    |
+|----------------|---------------------|---------|--------------------------|
+| `tempCH1`      | Temperatura CH1     | °C      | `mdi:thermometer`        |
+| `tempCH2`      | Temperatura CH2     | °C      | `mdi:thermometer`        |
+| `humiCH1`      | Umidade CH1         | %       | `mdi:water-percent`      |
+| `humiCH2`      | Umidade CH2         | %       | `mdi:water-percent`      |
+| `voltageDC0`   | Tensão DC0          | V       | `mdi:flash`              |
+| `voltageDC1`   | Tensão DC1          | V       | `mdi:flash`              |
+| `voltageAC0`   | Status AC0          | on/off  | `mdi:transmission-tower` |
 
 ---
 
@@ -66,15 +66,17 @@
 
 ---
 
-## 🧩 Serviços
+## 🧩 Ações
 
-É possível chamar os serviços manualmente:
+É possível remover o dispositivo via ações e ou chama-la manualmente:
 
 ```
-service: easymonitor.remover_dispositivo
+action: easymonitor.remover_dispositivo
 data:
   device_id: EASYM_BA84B
 ```
+
+Após remover, recarregue a integração via menu!
 ---
 
 ## 🔄 Automação Sugerida

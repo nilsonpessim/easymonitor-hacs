@@ -3,6 +3,7 @@ from homeassistant.helpers.entity import Entity
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.device_registry import CONNECTION_NETWORK_MAC
+from homeassistant.helpers.device_registry import async_get as async_get_device_registry
 from homeassistant.core import HomeAssistant
 
 import json
@@ -18,7 +19,7 @@ SENSORS = {
     "humiCH2": {"name": "humich2", "unit": "%", "icon": "mdi:water-percent"},
     "voltageDC0": {"name": "voltagedc0", "unit": "V", "icon": "mdi:flash"},
     "voltageDC1": {"name": "voltagedc1", "unit": "V", "icon": "mdi:flash"},
-    "voltageAC0": {"name": "voltageac0", "unit": "", "icon": "mdi:flash"},
+    "voltageAC0": {"name": "voltageac0", "unit": "", "icon": "mdi:transmission-tower"},
 }
 
 DEVICE_CLASSES = {
@@ -74,9 +75,24 @@ async def async_setup_entry(hass: HomeAssistant, config_entry, async_add_entitie
                     if not info_msg.payload.strip():
                        #  _LOGGER.warning(f"[EasyMonitor] Payload de info vazio para {device_id}, ignorado.")
                         return
+                    
                     info_payload = json.loads(info_msg.payload)
                     device_info_data.update(info_payload)
                     _LOGGER.info(f"[EasyMonitor] Info do dispositivo {device_id}: {info_payload}")
+
+                    device_registry = async_get_device_registry(hass)
+                    device = device_registry.async_get_device(identifiers={("easymonitor", device_id)})
+
+                    if device:
+                        device_registry.async_update_device(
+                            device.id,
+                            name=f"{info_payload.get('name', 'EasyMonitor')} - {device_id}",
+                            manufacturer=info_payload.get("manufacturer", "TechLabs"),
+                            model=info_payload.get("model", "EasyMonitor"),
+                            sw_version=info_payload.get("sw_version", "0.0.1"),
+                            configuration_url=f"http://{info_payload.get('ip', '0.0.0.0')}"
+                        )
+
                 except Exception as e:
                     _LOGGER.warning(f"[EasyMonitor] Falha ao processar info: {e}")
                 finally:
@@ -142,7 +158,7 @@ class EasyMonitorSensor(SensorEntity):
 
         self._attr_device_info = DeviceInfo(
             identifiers={("easymonitor", device_id)},
-            name=f"{device_info.get('name', 'EasyMonitor')} - ID: {device_id}",
+            name=f"{device_info.get('name', 'EasyMonitor')} - {device_id}",
             manufacturer=device_info.get("manufacturer", "TechLabs"),
             model=device_info.get("model", "EasyMonitor"),
             sw_version=device_info.get("sw_version", "0.0.1"),
